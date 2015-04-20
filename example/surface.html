@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Surface</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        #main {
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="main"></canvas>
+    <script type="text/javascript" src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-4/esl.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript">
+        require(['grapher'], function (grapher) {
+            var surface = new grapher.Surface(document.getElementById('main'), {
+                axisLineWidth: 5,
+                color: ['green', 'blue', 'red'],
+                xAxis: {
+                    data: new grapher.generator.Sequence(-1, 1, 0.1)
+                },
+                yAxis: {
+                    data: new grapher.generator.Sequence(-1, 1, 0.1)
+                },
+                zAxis: {
+                    range: [-2, 4],
+                    data: function (x, y) {
+                        return (x * x + y * y) * 3;
+                    }
+                },
+                autoRotate: false,
+                renderer: 'canvas'
+            });
+        });
+    </script>
+</body>
+</html>
