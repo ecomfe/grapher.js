@@ -29,15 +29,15 @@ define(function (require) {
 
         axisLineWidth: 1,
 
-        axisOutlineWidth: 1,
+        axisWireframeLineWidth: 1,
 
-        axisOutlineColor: 'grey',
+        axisWireframeLineColor: 'grey',
 
-        showGrid: true,
+        showWireframe: true,
 
-        gridLineColor: '#111',
+        wireframeLineColor: '#111',
 
-        gridLineWidth: 1,
+        wireframeLineWidth: 1,
 
         projection: 'orthographic',
 
@@ -113,8 +113,8 @@ define(function (require) {
                     }, opts.zAxis),
                 renderer: opts.renderer,
                 axisLineWidth: opts.axisLineWidth,
-                axisOutlineWidth: opts.axisOutlineWidth,
-                axisOutlineColor: opts.axisOutlineColor,
+                axisWireframeLineWidth: opts.axisWireframeLineWidth,
+                axisWireframeLineColor: opts.axisWireframeLineColor,
                 size: BOX_SIZE
             });
             this._cartesian = cartesian;
@@ -296,7 +296,7 @@ define(function (require) {
 
         _constructSurface: function (dataOpts, opts) {
             var surfaceGeo = new DynamicGeometry();
-            var gridGeo = opts.showGrid && new DynamicGeometry();
+            var gridGeo = opts.showWireframe && new DynamicGeometry();
 
             var attributes = surfaceGeo.attributes;
             var positionAttrib = attributes.position;
@@ -378,7 +378,7 @@ define(function (require) {
                     else if (i === uLen - 1 && j === vLen - 1) {
                         continue;   
                     }
-                    // Outlines
+                    // Wireframes
                     else if (i === uLen - 1) {
                         if (gridGeo) {
                             gridPositionAttrib.set(idx++, positionArr[i1]);
@@ -406,21 +406,23 @@ define(function (require) {
             root.add(surfaceMesh);
 
             if (gridGeo) {
-                var mat = app3d.createColorMaterial(colorTool.parse(opts.gridLineColor) || BLACK, 1);
+                var mat = app3d.createColorMaterial(colorTool.parse(opts.wireframeLineColor) || BLACK, 1);
+                var lineWidth = opts.wireframeLineWidth;
+                var GL_LINES = Renderable.LINES;
                 var gridMesh1 = new Renderable({
                     geometry: gridGeo,
                     material: mat,
                     culling: false,
-                    lineWidth: opts.gridLineWidth,
-                    mode: Renderable.LINES
+                    lineWidth: lineWidth,
+                    mode: GL_LINES
                 });
 
                 var gridMesh2 = new Renderable({
                     geometry: gridGeo,
                     material: mat,
                     culling: false,
-                    lineWidth: opts.gridLineWidth,
-                    mode: Renderable.LINES
+                    lineWidth: lineWidth,
+                    mode: GL_LINES
                 });
 
                 root.add(gridMesh1);

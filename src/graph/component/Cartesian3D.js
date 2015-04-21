@@ -66,9 +66,9 @@ define(function (require) {
             });
             var boxRenderable = new Renderable({
                 geometry: new LinesGeo(),
-                material: app3d.createColorMaterial(colorTool.parse(opts.axisOutlineColor), 1, false),
+                material: app3d.createColorMaterial(colorTool.parse(opts.axisWireframeLineColor), 1, false),
                 mode: Renderable.LINES,
-                lineWidth: opts.axisOutlineWidth,
+                lineWidth: opts.axisWireframeLineWidth,
             });
 
             this.root.add(renderable);
