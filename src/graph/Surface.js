@@ -4,10 +4,10 @@ define(function (require) {
 
     var Cartesian3D = require('./component/Cartesian3D');
     var App3D = require('../core/App3D');
-    var vendor = require('../core/vendor');
     var number = require('../core/number');
     var colorTool = require('../core/color');
 
+    var vendor = require('qtek/core/vendor');
     var DynamicGeometry = require('qtek/DynamicGeometry');
     var Scene = require('qtek/Scene');
     var PerspectiveCamera = require('qtek/camera/Perspective');

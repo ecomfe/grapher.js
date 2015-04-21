@@ -4,7 +4,7 @@
 
 define(function (require) {
 
-    var vendor = require('./vendor');
+    var vendor = require('qtek/core/vendor');
 
     var supportWebGL = vendor.supportWebGL();
 
@@ -30,7 +30,9 @@ define(function (require) {
                                 || function(func){setTimeout(func, 16);};
 
     // Import shaders
-    Shader.import(require('text!../shader/color.essl'));
+    if (supportWebGL) {
+        Shader['import'](require('text!../shader/color.essl'));
+    }
 
     /**
      * @alias module:grapher/core/App3D

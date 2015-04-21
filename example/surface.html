@@ -2,14 +2,16 @@
 <html>
 <head>
     <title>Surface</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content="width=device-width, initial-scale=1">
     <style>
         html, body {
             height: 100%;
             margin: 0;
         }
         #main {
-            width: 1000px;
-            height: 600px;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -24,18 +26,18 @@
                 axisOutlineWidth: 1,
 
                 gridLineColor: 'white',
-                gridLineWidth: 2,
+                gridLineWidth: 1,
                 color: ['green', 'blue', 'red'],
                 xAxis: {
-                    data: new grapher.generator.Sequence(-1, 1, 0.2)
+                    data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
                 },
                 yAxis: {
-                    data: new grapher.generator.Sequence(-1, 1, 0.2)
+                    data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
                 },
                 zAxis: {
-                    range: [-2, 4],
+                    range: [-2, 2],
                     data: function (x, y) {
-                        return (x * x + y * y) * 2;
+                        return Math.sin(x) * Math.sin(y);
                     }
                 },
                 autoRotate: false,
