@@ -27,7 +27,7 @@ define(function (require) {
 
     var DEFAULTS = {
 
-        axisLineWidth: 1,
+        axisLineWidth: 3,
 
         axisWireframeLineWidth: 1,
 
