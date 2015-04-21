@@ -20,7 +20,7 @@
     name: 'grapher',
 
     wrap: {
-        'startFile' : ['wrap/start.js', 'amd.js'],
+        'startFile' : ['wrap/start.js', 'almond.js'],
         'endFile' : 'wrap/end.js'
     },
 

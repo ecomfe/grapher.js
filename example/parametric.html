@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content="width=device-width, initial-scale=1">
-    <title>Surface</title>
+    <title>Parametric Surface</title>
     <style>
         html, body {
             height: 100%;
@@ -17,42 +17,45 @@
 </head>
 <body>
     <canvas id="main"></canvas>
+    <!--
     <script type="text/javascript" src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-4/esl.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
+    -->
+    <script src="../dist/grapher.js"></script>
     <script type="text/javascript">
         // http://www.r-bloggers.com/r-fun-with-surf3d-function/
-        require(['grapher'], function (grapher) {
-            var cos = Math.cos;
-            var sin = Math.sin;
-            var pow = Math.pow;
-            var Sequence = grapher.generator.Sequence;
-            var surface = new grapher.Surface(document.getElementById('main'), {
-                axisLineWidth: 5,
-                color: ['green', 'blue', 'red'],
-                parametric: true,
-                parameters: {
-                    u: new Sequence(0, Math.PI * 2 + 0.1, 0.1),
-                    v: new Sequence(-15, 6, 0.3)
-                },
-                xAxis: {
-                    data: function (u, v) {
-                        return pow(1.16, v) * cos(v) * (1 + cos(u));
-                    }
-                },
-                yAxis: {
-                    data: function (u, v) {
-                        return -pow(1.16, v) * sin(v) * (1 + cos(u));
-                    }
-                },
-                zAxis: {
-                    data: function (u, v) {
-                        return -2 * pow(1.16, v) * (1 + sin(u));
-                    }
-                },
-                autoRotate: true
-                // renderer: 'canvas'
-            });
+        // require(['grapher'], function (grapher) {
+        var cos = Math.cos;
+        var sin = Math.sin;
+        var pow = Math.pow;
+        var Sequence = grapher.generator.Sequence;
+        var surface = new grapher.Surface(document.getElementById('main'), {
+            axisLineWidth: 5,
+            color: ['green', 'blue', 'red'],
+            parametric: true,
+            parameters: {
+                u: new Sequence(0, Math.PI * 2 + 0.1, 0.1),
+                v: new Sequence(-15, 6, 0.3)
+            },
+            xAxis: {
+                data: function (u, v) {
+                    return pow(1.16, v) * cos(v) * (1 + cos(u));
+                }
+            },
+            yAxis: {
+                data: function (u, v) {
+                    return -pow(1.16, v) * sin(v) * (1 + cos(u));
+                }
+            },
+            zAxis: {
+                data: function (u, v) {
+                    return -2 * pow(1.16, v) * (1 + sin(u));
+                }
+            },
+            autoRotate: true
+            // renderer: 'canvas'
         });
+        // });
     </script>
 </body>
 </html>

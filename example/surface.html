@@ -17,33 +17,36 @@
 </head>
 <body>
     <canvas id="main"></canvas>
+    <!--
     <script type="text/javascript" src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-4/esl.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
+    -->
+    <script src="../dist/grapher.js"></script>
     <script type="text/javascript">
-        require(['grapher'], function (grapher) {
-            var surface = new grapher.Surface(document.getElementById('main'), {
-                axisLineWidth: 2,
-                axisOutlineWidth: 1,
+        // require(['grapher'], function (grapher) {
+        var surface = new grapher.Surface(document.getElementById('main'), {
+            axisLineWidth: 2,
+            axisOutlineWidth: 1,
 
-                gridLineColor: 'white',
-                gridLineWidth: 1,
-                color: ['green', 'blue', 'red'],
-                xAxis: {
-                    data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
-                },
-                yAxis: {
-                    data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
-                },
-                zAxis: {
-                    range: [-2, 2],
-                    data: function (x, y) {
-                        return Math.sin(x) * Math.sin(y);
-                    }
-                },
-                autoRotate: false,
-                renderer: 'canvas'
-            });
+            gridLineColor: 'white',
+            gridLineWidth: 1,
+            color: ['green', 'blue', 'red'],
+            xAxis: {
+                data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
+            },
+            yAxis: {
+                data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
+            },
+            zAxis: {
+                range: [-2, 2],
+                data: function (x, y) {
+                    return Math.sin(x) * Math.sin(y);
+                }
+            },
+            autoRotate: false,
+            renderer: 'canvas'
         });
+        // });
     </script>
 </body>
 </html>
