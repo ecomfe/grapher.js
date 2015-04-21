@@ -26,10 +26,11 @@
         // require(['grapher'], function (grapher) {
         var surface = new grapher.Surface(document.getElementById('main'), {
             axisLineWidth: 2,
-            axisOutlineWidth: 1,
+            axisWireframeLineWidth: 1,
 
-            gridLineColor: 'white',
-            gridLineWidth: 1,
+            wireframeLineColor: 'white',
+            wireframeLineWidth: 1,
+
             color: ['green', 'blue', 'red'],
             xAxis: {
                 data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
