@@ -23,13 +23,14 @@
             var cos = Math.cos;
             var sin = Math.sin;
             var pow = Math.pow;
+            var Sequence = grapher.generator.Sequence;
             var surface = new grapher.Surface(document.getElementById('main'), {
                 axisLineWidth: 5,
                 color: ['green', 'blue', 'red'],
                 parametric: true,
                 parameters: {
-                    u: new grapher.generator.Sequence(0, Math.PI * 2 + 0.1, 0.1),
-                    v: new grapher.generator.Sequence(-15, 6, 0.3)
+                    u: new Sequence(0, Math.PI * 2 + 0.1, 0.1),
+                    v: new Sequence(-15, 6, 0.3)
                 },
                 xAxis: {
                     data: function (u, v) {

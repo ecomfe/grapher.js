@@ -29,14 +29,16 @@ define(function (require) {
     {
         /**
          * Add a straight line
-         * @param {qtek.math.Vector3} p0
-         * @param {qtek.math.Vector3} p1
-         * @param {Array.<number>} color
+         * @param {Array.<number>} p0
+         * @param {Array.<number>} p1
+         * @param {Array.<number>} [color]
          */
         addLine: function (p0, p1, color) {
             var attributes = this.attributes;
-            attributes.position.value.push(p0._array, p1._array);
-            attributes.color.value.push(color, color);
+            attributes.position.value.push(p0, p1);
+            if (color) {
+                attributes.color.value.push(color, color);
+            }
         }
     });
 

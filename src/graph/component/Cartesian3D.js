@@ -57,40 +57,60 @@ define(function (require) {
 
         _initAxes: function (opts) {
             var self = this;
+            var app3d = this._app3d;
             var renderable = new Renderable({
                 geometry: new LinesGeo(),
-                material: this._app3d.createColorMaterial([1, 1, 1], 1, true),
+                material: app3d.createColorMaterial([1, 1, 1], 1, true),
                 mode: Renderable.LINES,
-                lineWidth: opts.lineWidth,
+                lineWidth: opts.axisLineWidth,
+            });
+            var boxRenderable = new Renderable({
+                geometry: new LinesGeo(),
+                material: app3d.createColorMaterial(colorTool.parse(opts.axisOutlineColor), 1, false),
+                mode: Renderable.LINES,
+                lineWidth: opts.axisOutlineWidth,
             });
 
-            var lineGeo = renderable.geometry;
-            var ZERO = Vector3.ZERO.clone();
+            this.root.add(renderable);
+            this.root.add(boxRenderable);
+
+            var ZERO = [0, 0, 0];
 
             var vectors = {
-                x: Vector3.POSITIVE_X.clone(),
-                y: Vector3.POSITIVE_Y.clone(),
-                z: Vector3.POSITIVE_Z.clone()
+                x: [1, 0, 0],
+                y: [0, 1, 0],
+                z: [0, 0, 1]
             };
 
             axes.forEach(function (dim, idx) {
                 // Clone and extend default options
-                var axisOpts = qtekUtil.extend({}, opts[dim]);
+                var axisOpts = qtekUtil.extend({}, opts[dim + 'Axis']);
                 qtekUtil.defaults(axisOpts, DEFAULTS[dim]);
 
                 self._cartesian.addAxis(dim, axisOpts.range);
 
-                lineGeo.addLine(
+                renderable.geometry.addLine(
                     ZERO, vectors[dim], colorTool.parse(axisOpts.lineColor)
                 );
             });
 
-            // Add other box edge lines
-            // lineGeo.addLine(
-            //     ZERO, vectors[dim], colorTool.parse(axisOpts.lineColor)
-            // );
+            // Add other box outlines
+            var points = [
+                [0, 1, 0], [0, 1, 1],
+                [0, 1, 0], [1, 1, 0],
+                [1, 1, 0], [1, 1, 1],
+                [0, 1, 1], [1, 1, 1],
 
-            this.root.add(renderable);
+                [0, 0, 1], [1, 0, 1],
+                [1, 0, 0], [1, 0, 1],
+
+                [0, 1, 1], [0, 0, 1],
+                [1, 1, 1], [1, 0, 1],
+                [1, 1, 0], [1, 0, 0]
+            ];
+            for (var i = 0; i < points.length;) {
+                boxRenderable.geometry.addLine(points[i++], points[i++]);
+            }
         }
     };
 

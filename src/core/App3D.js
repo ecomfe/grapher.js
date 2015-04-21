@@ -143,8 +143,8 @@ define(function (require) {
                 if (vertexColor) {
                     mat.shader.define('both', 'VERTEX_COLOR');
                 }
-                mat.set('color', color);
-                mat.set('alpha', opacity == null ? 1 : opacity);
+                mat.set('color', color.slice(0, 3));
+                mat.set('alpha', (opacity == null ? 1 : opacity) * (color[3] == null) ? 1 : color[3]);
                 return mat;
             }
         },

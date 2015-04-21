@@ -8,7 +8,7 @@
             margin: 0;
         }
         #main {
-            width: 600px;
+            width: 1000px;
             height: 600px;
         }
     </style>
@@ -20,18 +20,22 @@
     <script type="text/javascript">
         require(['grapher'], function (grapher) {
             var surface = new grapher.Surface(document.getElementById('main'), {
-                axisLineWidth: 5,
+                axisLineWidth: 2,
+                axisOutlineWidth: 1,
+
+                gridLineColor: 'white',
+                gridLineWidth: 2,
                 color: ['green', 'blue', 'red'],
                 xAxis: {
-                    data: new grapher.generator.Sequence(-1, 1, 0.1)
+                    data: new grapher.generator.Sequence(-1, 1, 0.2)
                 },
                 yAxis: {
-                    data: new grapher.generator.Sequence(-1, 1, 0.1)
+                    data: new grapher.generator.Sequence(-1, 1, 0.2)
                 },
                 zAxis: {
                     range: [-2, 4],
                     data: function (x, y) {
-                        return (x * x + y * y) * 3;
+                        return (x * x + y * y) * 2;
                     }
                 },
                 autoRotate: false,

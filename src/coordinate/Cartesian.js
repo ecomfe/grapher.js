@@ -28,7 +28,7 @@ define(function (require) {
         /**
          * Add an axis
          * @param {number|string} dim
-         * @param {data range} range [description]
+         * @param {data range} range
          */
         addAxis: function (dim, range) {
             var axis = new Axis(dim, range, [0, this._size]);

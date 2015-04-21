@@ -29,9 +29,15 @@ define(function (require) {
 
         axisLineWidth: 1,
 
+        axisOutlineWidth: 1,
+
+        axisOutlineColor: 'grey',
+
         showGrid: true,
 
         gridLineColor: '#111',
+
+        gridLineWidth: 1,
 
         projection: 'orthographic',
 
@@ -96,17 +102,19 @@ define(function (require) {
             var zRange = opts.zAxis.range || rangeOfData(data.map(function (a) {return a.z}));
 
             var cartesian = new Cartesian3D(app3d, {
-                x: qtekUtil.extend({
+                xAxis: qtekUtil.extend({
                         range: xRange
                     }, opts.xAxis),
-                y: qtekUtil.extend({
+                yAxis: qtekUtil.extend({
                         range: yRange
                     }, opts.yAxis),
-                z: qtekUtil.extend({
+                zAxis: qtekUtil.extend({
                         range: zRange
                     }, opts.zAxis),
                 renderer: opts.renderer,
-                lineWidth: opts.axisLineWidth,
+                axisLineWidth: opts.axisLineWidth,
+                axisOutlineWidth: opts.axisOutlineWidth,
+                axisOutlineColor: opts.axisOutlineColor,
                 size: BOX_SIZE
             });
             this._cartesian = cartesian;
@@ -348,25 +356,44 @@ define(function (require) {
 
             var positionArr = positionAttrib.value;
             var gridPositionAttrib = gridGeo && gridGeo.attributes.position;
-            for (var i = 0; i < uLen - 1; i++) {
-                for (var j = 0; j < vLen - 1; j++) {
+            for (var i = 0; i < uLen; i++) {
+                for (var j = 0; j < vLen; j++) {
                     var i2 = i * vLen + j;
-                    var i1 = (i * vLen + j + 1);
+                    var i1 = i * vLen + j + 1;
                     var i4 = (i + 1) * vLen + j + 1;
                     var i3 = (i + 1) * vLen + j;
 
-                    faces.push([i1, i2, i4], [i2, i3, i4]);
+                    if (i < uLen - 1 && j < vLen - 1 ) {
+                        faces.push([i1, i2, i4], [i2, i3, i4]);
 
-                    if (gridGeo) {
-                        // Line1
-                        gridPositionAttrib.set(idx++, positionArr[i1]);
-                        gridPositionAttrib.set(idx++, positionArr[i2]);
-                        // Line2
-                        gridPositionAttrib.set(idx++, positionArr[i2]);
-                        gridPositionAttrib.set(idx++, positionArr[i3]);
+                        if (gridGeo) {
+                            // Line1
+                            gridPositionAttrib.set(idx++, positionArr[i1]);
+                            gridPositionAttrib.set(idx++, positionArr[i2]);
+                            // Line2
+                            gridPositionAttrib.set(idx++, positionArr[i2]);
+                            gridPositionAttrib.set(idx++, positionArr[i3]);
+                        }
+                    }
+                    else if (i === uLen - 1 && j === vLen - 1) {
+                        continue;   
+                    }
+                    // Outlines
+                    else if (i === uLen - 1) {
+                        if (gridGeo) {
+                            gridPositionAttrib.set(idx++, positionArr[i1]);
+                            gridPositionAttrib.set(idx++, positionArr[i2]);
+                        }
+                    }
+                    else {
+                        if (gridGeo) {
+                            gridPositionAttrib.set(idx++, positionArr[i2]);
+                            gridPositionAttrib.set(idx++, positionArr[i3]);
+                        }
                     }
                 }
             }
+
 
             var app3d = this._app3d;
             var root = this._root;
@@ -379,17 +406,30 @@ define(function (require) {
             root.add(surfaceMesh);
 
             if (gridGeo) {
-                var gridMesh = new Renderable({
+                var mat = app3d.createColorMaterial(colorTool.parse(opts.gridLineColor) || BLACK, 1);
+                var gridMesh1 = new Renderable({
                     geometry: gridGeo,
-                    material: app3d.createColorMaterial(colorTool.parse(opts.gridLineColor) || BLACK, 1),
+                    material: mat,
                     culling: false,
-                    lineWidth: 1,
+                    lineWidth: opts.gridLineWidth,
                     mode: Renderable.LINES
                 });
 
-                root.add(gridMesh);
-            }
+                var gridMesh2 = new Renderable({
+                    geometry: gridGeo,
+                    material: mat,
+                    culling: false,
+                    lineWidth: opts.gridLineWidth,
+                    mode: Renderable.LINES
+                });
 
+                root.add(gridMesh1);
+                root.add(gridMesh2);
+                // Avoid z-fighting
+                // FIXME Better solution ?
+                gridMesh1.scale.set(1.002, 1.002, 1.002);
+                gridMesh2.scale.set(0.999, 0.999, 0.999);
+            }
         }
     }
 
