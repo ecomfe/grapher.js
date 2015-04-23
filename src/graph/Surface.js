@@ -97,9 +97,9 @@ define(function (require) {
 
             var dataOpts = this._convertData(opts);
             var data = dataOpts.data;
-            var xRange = opts.xAxis.range || rangeOfData(data.map(function (a) {return a.x}));
-            var yRange = opts.yAxis.range || rangeOfData(data.map(function (a) {return a.y}));
-            var zRange = opts.zAxis.range || rangeOfData(data.map(function (a) {return a.z}));
+            var xRange = opts.xAxis.range || rangeOfData(data.map(function (a) {return a.x;}));
+            var yRange = opts.yAxis.range || rangeOfData(data.map(function (a) {return a.y;}));
+            var zRange = opts.zAxis.range || rangeOfData(data.map(function (a) {return a.z;}));
 
             var cartesian = new Cartesian3D(app3d, {
                 xAxis: qtekUtil.extend({
@@ -307,9 +307,9 @@ define(function (require) {
             var vLen = dataOpts.vLen;
             var data = dataOpts.data;
 
-            var xRange = rangeOfData(data.map(function (a) {return a.x}));;
-            var yRange = rangeOfData(data.map(function (a) {return a.y}));;
-            var zRange = rangeOfData(data.map(function (a) {return a.z}));;
+            var xRange = rangeOfData(data.map(function (a) {return a.x;}));
+            var yRange = rangeOfData(data.map(function (a) {return a.y;}));
+            var zRange = rangeOfData(data.map(function (a) {return a.z;}));
 
             // Color gradient
             var colorCfg = opts.color;
@@ -345,7 +345,7 @@ define(function (require) {
                     var xPercent = (value.x - xRange[0]) / (xRange[1] - xRange[0]);
                     var yPercent = (value.y - yRange[0]) / (yRange[1] - yRange[0]);
                     var zPercent = (value.z - zRange[0]) / (zRange[1] - zRange[0]);
-                    color = colorTool.parse(colorCfg(xPercent, yPercent, zPercent, x, y, z)) || BLACK;
+                    color = colorTool.parse(colorCfg(xPercent, yPercent, zPercent, value.x, value.y, value.z)) || BLACK;
                 }
 
                 colorAttrib.set(i, color);

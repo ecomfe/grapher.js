@@ -28,10 +28,13 @@
         var cos = Math.cos;
         var sin = Math.sin;
         var pow = Math.pow;
+        var round = Math.round;
         var Sequence = grapher.generator.Sequence;
         var surface = new grapher.Surface(document.getElementById('main'), {
             axisLineWidth: 5,
-            color: ['green', 'blue', 'red'],
+            color: function (x, y, z) {
+                return 'rgb(' + round(x * 255) + ',' + round(y * 255) + ',' + round(z * 255) + ')';
+            },
             parametric: true,
             parameters: {
                 u: new Sequence(0, Math.PI * 2 + 0.1, 0.1),

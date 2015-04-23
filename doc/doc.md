@@ -32,6 +32,10 @@ And here is the results.
 
 <div class="preview" data-code="code-quick-start"></div>
 
+## Browser Support
+
+Grapher.js can run in almost all mordern browerers on PC and mobile. In the environment with WebGL support, it will use WebGL to render all the 3D objects, which is fast. If the browser doesn't support WebGL, for example browsers in Android and IE9, 10. It will try to use canvas to render  the 3d objects, which of cause, will be much more slower. But for most cases, performance will not be an issue.
+
 ## Surface Graph
 
 Surface graph is a graph visualizing equation `z = f(x, y)`. In which z defines the height of  surface over an underlying `(x, y)` grid. In the previous example this eaquation is `z = sin(x) + sin(y)`.
@@ -60,7 +64,20 @@ var seq = new grapher.generator.Sequence(0, 100, 1);
 
 The advantange of `Sequence` is it only contains the three properties described before. Not like array, it doesn't cost memory (especially when it is large) to keep the elements.
 
-Besides `xAxis`, `yAxis`. The data of `zAxis` is really matters. 
+### Value of Z
+
+Besides `xAxis`, `yAxis`. `data` of `zAxis` is really matters.  Because the equation is `z = f(x, y)`. The most intuitional way to get `z` is set `zAxis.data` as a callback function wich has two parameters `x` and `y` and returned the evaluation. For example
+
+```javascript
+zAxis: {
+    data: function (x, y) {
+        return x * x + y * y;
+    }
+}
+```
+
+`zAxis.data` also can be a m-by-n matrix. When `xAxis.data` is an n-vector and `yAxis.data` is an n-vector.
+
 
 ### Parametric Surface
 
@@ -94,8 +111,9 @@ var surface = new grapher.Surface(canvas, {
 });
 </pre>
 
+<div class="preview" data-code="code-sphere"></div>
 
-Another mollusc shell example in which equations are much more complex will show you the fun and fascination of parameteric surface
+Another mollusc shell example in which equations are much more complex will show you the fun and fascination of parameteric surface.
 
 <pre id="code-mollusc-shell">
 var cos = Math.cos;
@@ -127,11 +145,82 @@ var surface = new grapher.Surface(canvas, {
 });
 </pre>
 
+<div class="preview" data-code="code-mollusc-shell"></div>
 
 ### Surface Color
 
-### Wireframe Styling
+Points on the surface can be colored differently to make the graph more clearly and beautiful.
 
-### Axis Styling
+For each point in the surface with coord`x`, `y`, `z=f(x, y)`. We define the color on it is `C(x, y, z)`. 
 
+
+#### Color function
+
+As described before, color is a function of `x`, `y`, `z`. And more generally we want the `x`, `y`, `z` to be a percent value from 0 to 1 to make the color mapping more convenient. Like the following example
+
+```javascript
+color: function (x0, y0, z0, x, y, z) {
+    var round = Math.round;
+    return 'rgb(' + round(x0 * 255) + ',' + round(y0 * 255) + ',' + round(z0 * 255) + ')';
+}
+```
+
+First three parameters are the percent value of `x`, `y`, `z`. Second three parameters are the real value.
+
+#### Color Gradient
+
+Default color function in `Grapher.js` is a linear gradient from smaller z value to larger z value. Which can be described with a list of color strings. Following configuration will have a gradient from light grey to deep grey.
+
+```javascript
+color: ['#eee', '#111']
+```
+
+
+## Full Option
+
+```javascript
+{
+
+    axisLineWidth: 3,
+
+    axisWireframeLineWidth: 1,
+
+    axisWireframeLineColor: 'grey',
+
+    showWireframe: true,
+
+    wireframeLineColor: '#111',
+
+    wireframeLineWidth: 1,
+
+    projection: 'orthographic',
+
+    renderer: 'auto',
+
+    autoRotate: true,
+
+    parametric: false,
+
+    color: ['red', 'green'],
+
+    // If parametric is true
+    parameters: {
+        u: new Sequence(0, 1, 0.05),
+        v: new Sequence(0, 1, 0.05)
+    },
+    
+    xAxis: {
+        lineColor: '#f00'l,
+        data: new Sequence(0, 1, 0.05)
+    },
+    yAxis: {
+        lineColor: '#0f0',
+        data: new Sequence(0, 1, 0.05)
+    },
+    zAxis: {
+        lineColor: '#00f',
+        data: function (x, y) { return 1; }
+    }
+};
+```
 ## API

@@ -12,13 +12,13 @@ define(function (require) {
     var axes = ['x', 'y', 'z'];
 
     var DEFAULTS = {
-        x: {
+        xAxis: {
             lineColor: '#f00'
         },
-        y: {
+        yAxis: {
             lineColor: '#0f0'
         },
-        z: {
+        zAxis: {
             lineColor: '#00f'
         }
     }
@@ -83,9 +83,10 @@ define(function (require) {
             };
 
             axes.forEach(function (dim, idx) {
+                var name = dim + 'Axis';
                 // Clone and extend default options
-                var axisOpts = qtekUtil.extend({}, opts[dim + 'Axis']);
-                qtekUtil.defaults(axisOpts, DEFAULTS[dim]);
+                var axisOpts = qtekUtil.extend({}, opts[name]);
+                qtekUtil.defaults(axisOpts, DEFAULTS[name]);
 
                 self._cartesian.addAxis(dim, axisOpts.range);
 
