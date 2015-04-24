@@ -1,28 +1,27 @@
-# Grapher.js
-
 Grapher.js is a library built on top of [qtek](https://github.com/pissang/qtek) for 3d plotting. It is relatively small (44kb after gzipped), easy to use and mobile friendly. Currently only surface graph is available.
 
 ## Quick Start
-
+<!--
 ```html
 <script src="http://pissang.github.io/grapher.js/dist/grapher.js"></script>
 ```
-
+-->
 <pre id="code-quick-start">
 var surface = new grapher.Surface(canvas, {
     color: ['green', 'red'],
     xAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
+        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
     },
     yAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.4)
+        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
     },
     zAxis: {
         range: [-2, 2],
         data: function (x, y) {
             return Math.sin(x) * Math.sin(y);
         }
-    }
+    },
+    autoRotate: false
 });
 </pre>
 
@@ -34,7 +33,7 @@ And here is the results.
 
 ## Browser Support
 
-Grapher.js can run in almost all mordern browerers on PC and mobile. In the environment with WebGL support, it will use WebGL to render all the 3D objects, which is fast. If the browser doesn't support WebGL, for example browsers in Android and IE9, 10. It will try to use canvas to render  the 3d objects, which of cause, will be much more slower. But for most cases, performance will not be an issue.
+Grapher.js can run on almost all mordern browerers on PC and mobile. In the environment with WebGL support, it will use WebGL to render all the 3D objects, which is fast. If the browser doesn't support WebGL, for example browsers in Android and IE9, 10. It will try to use canvas to render  the 3d objects, which of cause, will be much more slower. But for most cases, performance will not be an issue.
 
 ## Surface Graph
 
@@ -89,25 +88,32 @@ In the following example we will draw a sphere with parametric surface. And para
 
 
 <pre id="code-sphere">
+var sin = Math.sin;
+var cos = Math.cos;
+var PI = Math.PI;
 var surface = new grapher.Surface(canvas, {
     color: ['green', 'red'],
     parametric: true,
     parameters: {
-        u: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.1),
-        v: new grapher.generator.Sequence(-Math.PI / 2, Math.PI / 2, 0.1)
-    }
+        u: new grapher.generator.Sequence(-PI, PI, PI / 20),
+        v: new grapher.generator.Sequence(0, PI, PI / 20)
+    },
     xAxis: {
         data: function (u, v) {
+            return sin(u) * sin(v);
         }
     },
     yAxis: {
         data: function (u, v) {
+            return sin(u) * cos(v);
         }
     },
     zAxis: {
         data: function (u, v) {
+            return cos(u);
         }
-    }
+    },
+    autoRotate: false
 });
 </pre>
 
@@ -123,8 +129,8 @@ var Sequence = grapher.generator.Sequence;
 var surface = new grapher.Surface(canvas, {
     parametric: true,
     parameters: {
-        u: new Sequence(0, Math.PI * 2 + 0.1, 0.1),
-        v: new Sequence(-15, 6, 0.3)
+        u: new Sequence(0, Math.PI * 2, Math.PI / 30),
+        v: new Sequence(-15, 6, 0.21)
     },
     xAxis: {
         data: function (u, v) {
@@ -141,7 +147,7 @@ var surface = new grapher.Surface(canvas, {
             return -2 * pow(1.16, v) * (1 + sin(u));
         }
     },
-    autoRotate: true
+    autoRotate: false
 });
 </pre>
 
@@ -165,7 +171,47 @@ color: function (x0, y0, z0, x, y, z) {
 }
 ```
 
-First three parameters are the percent value of `x`, `y`, `z`. Second three parameters are the real value.
+First three parameters are the percent value of `x`, `y`, `z`. Second three parameters are the real value. 
+
+If we apply the color function to the mollusc shell example.
+
+<script type="example/javascript" class="code" id="code-mollusc-shell-color" style="display:none;">
+var cos = Math.cos;
+var sin = Math.sin;
+var pow = Math.pow;
+var Sequence = grapher.generator.Sequence;
+var surface = new grapher.Surface(canvas, {
+    parametric: true,
+    parameters: {
+        u: new Sequence(0, Math.PI * 2, Math.PI / 30),
+        v: new Sequence(-15, 6, 0.21)
+    },
+    color: function (x0, y0, z0, x, y, z) {
+        var round = Math.round;
+        return 'rgb(' + round(x0 * 255) + ',' + round(y0 * 255) + ',' + round(z0 * 255) + ')';
+    },
+    xAxis: {
+        data: function (u, v) {
+            return pow(1.16, v) * cos(v) * (1 + cos(u));
+        }
+    },
+    yAxis: {
+        data: function (u, v) {
+            return -pow(1.16, v) * sin(v) * (1 + cos(u));
+        }
+    },
+    zAxis: {
+        data: function (u, v) {
+            return -2 * pow(1.16, v) * (1 + sin(u));
+        }
+    },
+    autoRotate: false
+});
+</script>
+
+<div class="preview" data-code="code-mollusc-shell-color"></div>
+ 
+Here is the logo!
 
 #### Color Gradient
 
@@ -176,51 +222,66 @@ color: ['#eee', '#111']
 ```
 
 
-## Full Option
+### Full Option of Surface
 
 ```javascript
 {
-
+    // Line width of x, y, z axis
     axisLineWidth: 3,
-
+    
+    // Line width of axis outline wireframe
     axisWireframeLineWidth: 1,
-
+    
+    // Line color of axis outline wireframe
     axisWireframeLineColor: 'grey',
 
+    // If show wireframe of surface
     showWireframe: true,
 
+    // Surface wireframe color
     wireframeLineColor: '#111',
 
+    // Surface wireframe line width
     wireframeLineWidth: 1,
-
+    
+    // Camera projection, 'orthographic' or 'perspective'
     projection: 'orthographic',
-
+    
+    // Choose renderer, default is 'auto', which will use WebGL renderer
+    // If possible. You can force it using canvas renderer by setting value 
+    // 'canvas'
     renderer: 'auto',
-
+    
+    // If autorotate the scene
     autoRotate: true,
-
+    
+    // If surface is parametric
     parametric: false,
 
+    // Color gradient or color function
     color: ['red', 'green'],
-
+    
+    // U, V Sequence of parametric equation
     // If parametric is true
     parameters: {
         u: new Sequence(0, 1, 0.05),
         v: new Sequence(0, 1, 0.05)
     },
-    
+
     xAxis: {
+        // Line color of x axis
         lineColor: '#f00'l,
         data: new Sequence(0, 1, 0.05)
     },
     yAxis: {
+        // Line color of y axis
         lineColor: '#0f0',
         data: new Sequence(0, 1, 0.05)
     },
     zAxis: {
+        // Line color of z axis
         lineColor: '#00f',
         data: function (x, y) { return 1; }
     }
 };
 ```
-## API
