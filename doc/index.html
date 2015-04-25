@@ -22,18 +22,17 @@
 
 <h2 id="quick-start">Quick Start</h2>
 <h3 id="including-grapher-js">Including Grapher.js</h3>
-<p>You can including Grapher.js by script tag and get a <code>grapher</code> global namespace.</p>
+<p>You can include Grapher.js with a script tag and will get a <code>grapher</code> global namespace.</p>
 <pre><code class="lang-html">&lt;script src=&quot;grapher.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
     // Print version of Grapher.js
     console.log(grapher.version);
 &lt;/script&gt;
 </code></pre>
-<p>If you have an <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> environment.</p>
+<p>Or if you have an <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> environment.</p>
 <pre><code class="lang-javascript">var grapher = require(&#39;grapher&#39;);
 // Print version of Grapher.js
 console.log(grapher.version);
-
 
 // Or require grapher asynchronously
 require([&#39;grapher&#39;], function (grapher) {

@@ -11,7 +11,7 @@ Grapher.js is a library built on top of [qtek](https://github.com/pissang/qtek) 
 
 ### Including Grapher.js
 
-You can including Grapher.js by script tag and get a `grapher` global namespace.
+You can include Grapher.js with a script tag and will get a `grapher` global namespace.
 
 ```html
 <script src="grapher.js"></script>
@@ -21,13 +21,12 @@ You can including Grapher.js by script tag and get a `grapher` global namespace.
 </script>
 ```
 
-If you have an [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) environment.
+Or if you have an [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) environment.
 
 ```javascript
 var grapher = require('grapher');
 // Print version of Grapher.js
 console.log(grapher.version);
-
 
 // Or require grapher asynchronously
 require(['grapher'], function (grapher) {
