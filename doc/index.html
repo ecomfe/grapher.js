@@ -5,34 +5,56 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+
     <main>
         <header>
             <img id="logo" src="img/logo.png" alt="">
             <h1>Grapher.js</h1>
-
-            <a href=""></a>
         </header>
         <article>
             <p>Grapher.js is a library built on top of <a href="https://github.com/pissang/qtek">qtek</a> for 3d plotting. It is relatively small (44kb after gzipped), easy to use and mobile friendly. Currently only surface graph is available.</p>
+<div id="download">
+    <a href="https://raw.githubusercontent.com/ecomfe/grapher.js/master/dist/grapher.js">
+        <img src="img/download.svg" alt="">
+        Download v0.1
+    </a>
+</div>
+
 <h2 id="quick-start">Quick Start</h2>
-<!--
-```html
-<script src="http://pissang.github.io/grapher.js/dist/grapher.js"></script>
-```
--->
+<h3 id="including-grapher-js">Including Grapher.js</h3>
+<p>You can including Grapher.js by script tag and get a <code>grapher</code> global namespace.</p>
+<pre><code class="lang-html">&lt;script src=&quot;grapher.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    // Print version of Grapher.js
+    console.log(grapher.version);
+&lt;/script&gt;
+</code></pre>
+<p>If you have an <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD</a> environment.</p>
+<pre><code class="lang-javascript">var grapher = require(&#39;grapher&#39;);
+// Print version of Grapher.js
+console.log(grapher.version);
+
+
+// Or require grapher asynchronously
+require([&#39;grapher&#39;], function (grapher) {
+    // Create a surface graph    
+});
+</code></pre>
+<h3 id="first-example">First Example</h3>
+<p>After including Grapher.js. You can use the <code>Surface</code> class in <code>grapher</code> namespace to create a basic surface graph.</p>
 <pre id="code-quick-start">
 var surface = new grapher.Surface(canvas, {
     color: ['green', 'red'],
     xAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
+        data: new grapher.generator.Sequence(-1, 1, 0.1)
     },
     yAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
+        data: new grapher.generator.Sequence(-1, 1, 0.1)
     },
     zAxis: {
         range: [-2, 2],
         data: function (x, y) {
-            return Math.sin(x) * Math.sin(y);
+            return Math.sin(x * Math.PI) * Math.sin(y * Math.PI);
         }
     },
     autoRotate: false
@@ -56,19 +78,19 @@ var surface = new grapher.Surface(canvas, {
 yAxis: {
     data: [1, 2, 3, 4, 5]
 }
-</code></pre><p>Instead of array, a more convenient way is using the <code>grapher.generator.Sequence</code>. You can define the <code>start</code>, <code>end</code> and <code>increment</code>. The following code generate sequence <code>0, 1, 2, 3 ... 100</code></p>
+</code></pre><p>Instead of array, a more convenient way is using the <code>grapher.generator.Sequence</code>. You can define the <code>start</code>, <code>end</code> and <code>increment</code>. The following code will generate sequence <code>0, 1, 2, 3 ... 100</code></p>
 <pre><code class="lang-javascript">var seq = new grapher.generator.Sequence(0, 100, 1);
 </code></pre>
 <p>The advantange of <code>Sequence</code> is it only contains the three properties described before. Not like array, it doesn&#39;t cost memory (especially when it is large) to keep the elements.</p>
 <h3 id="value-of-z">Value of Z</h3>
-<p>Besides <code>xAxis</code>, <code>yAxis</code>. <code>data</code> of <code>zAxis</code> is really matters.  Because the equation is <code>z = f(x, y)</code>. The most intuitional way to get <code>z</code> is set <code>zAxis.data</code> as a callback function wich has two parameters <code>x</code> and <code>y</code> and returned the evaluation. For example</p>
+<p>Besides <code>xAxis</code>, <code>yAxis</code>. <code>data</code> of <code>zAxis</code> is really matters.  As the equation is <code>z = f(x, y)</code>. The most intuitional way to get <code>z</code> is set <code>zAxis.data</code> as a callback function wich has two parameters <code>x</code> and <code>y</code> and returned the evaluation. For example</p>
 <pre><code class="lang-javascript">zAxis: {
     data: function (x, y) {
         return x * x + y * y;
     }
 }
 </code></pre>
-<p><code>zAxis.data</code> also can be a m-by-n matrix. When <code>xAxis.data</code> is an n-vector and <code>yAxis.data</code> is an n-vector.</p>
+<p><code>zAxis.data</code> also can be a m-by-n matrix. When <code>xAxis.data</code> is an n-vector and <code>yAxis.data</code> is an m-vector.</p>
 <h3 id="parametric-surface">Parametric Surface</h3>
 <p>A more general way is using parametric surface. Which is defined by a <a href="http://en.wikipedia.org/wiki/Parametric_equation">parametric equation</a> with two parameters <code>u</code> and <code>v</code>.</p>
 <p>To draw a parametric surface. <code>parametric</code> property must be <code>true</code>.</p>
@@ -140,8 +162,8 @@ var surface = new grapher.Surface(canvas, {
 
 <h3 id="surface-color">Surface Color</h3>
 <p>Points on the surface can be colored differently to make the graph more clearly and beautiful.</p>
-<p>For each point in the surface with coord<code>x</code>, <code>y</code>, <code>z=f(x, y)</code>. We define the color on it is <code>C(x, y, z)</code>. </p>
-<h4 id="color-function">Color function</h4>
+<p>For each point in the surface with coord <code>x</code>, <code>y</code>, <code>z=f(x, y)</code>. We define the color of it is <code>C(x, y, z)</code>. </p>
+<h4 id="color-function">Color Function</h4>
 <p>As described before, color is a function of <code>x</code>, <code>y</code>, <code>z</code>. And more generally we want the <code>x</code>, <code>y</code>, <code>z</code> to be a percent value from 0 to 1 to make the color mapping more convenient. Like the following example</p>
 <pre><code class="lang-javascript">color: function (x0, y0, z0, x, y, z) {
     var round = Math.round;
@@ -229,7 +251,7 @@ var surface = new grapher.Surface(canvas, {
     color: [&#39;red&#39;, &#39;green&#39;],
 
     // U, V Sequence of parametric equation
-    // If parametric is true
+    // Used if parametric is true
     parameters: {
         u: new Sequence(0, 1, 0.05),
         v: new Sequence(0, 1, 0.05)
@@ -237,7 +259,7 @@ var surface = new grapher.Surface(canvas, {
 
     xAxis: {
         // Line color of x axis
-        lineColor: &#39;#f00&#39;l,
+        lineColor: &#39;#f00&#39;,
         data: new Sequence(0, 1, 0.05)
     },
     yAxis: {
@@ -259,6 +281,8 @@ var surface = new grapher.Surface(canvas, {
     <footer>
         Maintained by <a href="http://echarts.baidu.com">ECharts</a> team
     </footer>
+
+    <a href="https://github.com/ecomfe/grapher.js"><img style="z-index: 100; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
     <script src="lib/jquery.min.js"></script>
     <script src="lib/prettify/prettify.js"></script>

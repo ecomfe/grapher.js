@@ -1,24 +1,57 @@
 Grapher.js is a library built on top of [qtek](https://github.com/pissang/qtek) for 3d plotting. It is relatively small (44kb after gzipped), easy to use and mobile friendly. Currently only surface graph is available.
 
+<div id="download">
+    <a href="https://raw.githubusercontent.com/ecomfe/grapher.js/master/dist/grapher.js">
+        <img src="img/download.svg" alt="">
+        Download v0.1
+    </a>
+</div>
+
 ## Quick Start
-<!--
+
+### Including Grapher.js
+
+You can including Grapher.js by script tag and get a `grapher` global namespace.
+
 ```html
-<script src="http://pissang.github.io/grapher.js/dist/grapher.js"></script>
+<script src="grapher.js"></script>
+<script>
+    // Print version of Grapher.js
+    console.log(grapher.version);
+</script>
 ```
--->
+
+If you have an [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD) environment.
+
+```javascript
+var grapher = require('grapher');
+// Print version of Grapher.js
+console.log(grapher.version);
+
+
+// Or require grapher asynchronously
+require(['grapher'], function (grapher) {
+    // Create a surface graph    
+});
+```
+
+### First Example
+
+After including Grapher.js. You can use the `Surface` class in `grapher` namespace to create a basic surface graph.
+
 <pre id="code-quick-start">
 var surface = new grapher.Surface(canvas, {
     color: ['green', 'red'],
     xAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
+        data: new grapher.generator.Sequence(-1, 1, 0.1)
     },
     yAxis: {
-        data: new grapher.generator.Sequence(-Math.PI, Math.PI, 0.3)
+        data: new grapher.generator.Sequence(-1, 1, 0.1)
     },
     zAxis: {
         range: [-2, 2],
         data: function (x, y) {
-            return Math.sin(x) * Math.sin(y);
+            return Math.sin(x * Math.PI) * Math.sin(y * Math.PI);
         }
     },
     autoRotate: false
@@ -55,7 +88,7 @@ yAxis: {
 }
 ```
 
-Instead of array, a more convenient way is using the `grapher.generator.Sequence`. You can define the `start`, `end` and `increment`. The following code generate sequence `0, 1, 2, 3 ... 100`
+Instead of array, a more convenient way is using the `grapher.generator.Sequence`. You can define the `start`, `end` and `increment`. The following code will generate sequence `0, 1, 2, 3 ... 100`
 
 ```javascript
 var seq = new grapher.generator.Sequence(0, 100, 1);
@@ -65,7 +98,7 @@ The advantange of `Sequence` is it only contains the three properties described 
 
 ### Value of Z
 
-Besides `xAxis`, `yAxis`. `data` of `zAxis` is really matters.  Because the equation is `z = f(x, y)`. The most intuitional way to get `z` is set `zAxis.data` as a callback function wich has two parameters `x` and `y` and returned the evaluation. For example
+Besides `xAxis`, `yAxis`. `data` of `zAxis` is really matters.  As the equation is `z = f(x, y)`. The most intuitional way to get `z` is set `zAxis.data` as a callback function wich has two parameters `x` and `y` and returned the evaluation. For example
 
 ```javascript
 zAxis: {
@@ -75,7 +108,7 @@ zAxis: {
 }
 ```
 
-`zAxis.data` also can be a m-by-n matrix. When `xAxis.data` is an n-vector and `yAxis.data` is an n-vector.
+`zAxis.data` also can be a m-by-n matrix. When `xAxis.data` is an n-vector and `yAxis.data` is an m-vector.
 
 
 ### Parametric Surface
@@ -157,10 +190,10 @@ var surface = new grapher.Surface(canvas, {
 
 Points on the surface can be colored differently to make the graph more clearly and beautiful.
 
-For each point in the surface with coord`x`, `y`, `z=f(x, y)`. We define the color on it is `C(x, y, z)`. 
+For each point in the surface with coord `x`, `y`, `z=f(x, y)`. We define the color of it is `C(x, y, z)`. 
 
 
-#### Color function
+#### Color Function
 
 As described before, color is a function of `x`, `y`, `z`. And more generally we want the `x`, `y`, `z` to be a percent value from 0 to 1 to make the color mapping more convenient. Like the following example
 
@@ -262,7 +295,7 @@ color: ['#eee', '#111']
     color: ['red', 'green'],
     
     // U, V Sequence of parametric equation
-    // If parametric is true
+    // Used if parametric is true
     parameters: {
         u: new Sequence(0, 1, 0.05),
         v: new Sequence(0, 1, 0.05)
@@ -270,7 +303,7 @@ color: ['#eee', '#111']
 
     xAxis: {
         // Line color of x axis
-        lineColor: '#f00'l,
+        lineColor: '#f00',
         data: new Sequence(0, 1, 0.05)
     },
     yAxis: {
