@@ -1,7 +1,7 @@
 /**
  * Grapher.js
  * 
- * Copyright (c) 2015, Grapher.js
+ * Copyright (c) 2015, Baidu Inc.
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
