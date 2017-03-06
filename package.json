@@ -1,0 +1,30 @@
+{
+  "name": "grapher.js",
+  "version": "1.0.0",
+  "description": "JavaScript 3D Plot Library",
+  "main": "dist/grapher.js",
+  "directories": {
+    "doc": "doc",
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecomfe/grapher.js.git"
+  },
+  "keywords": [
+    "3d",
+    "plot",
+    "graphing",
+    "math",
+    "webgl"
+  ],
+  "author": "Baidu EFE team",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/ecomfe/grapher.js/issues"
+  },
+  "homepage": "https://github.com/ecomfe/grapher.js#readme"
+}
