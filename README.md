@@ -3,9 +3,9 @@
 Grapher.js is a library built on top of [qtek](https://github.com/pissang/qtek) for 3d plotting. It is relatively small (44kb after gzipped), easy to use and mobile friendly. Currently only surface graph is available.
 
 
-####[Download v0.1](https://raw.githubusercontent.com/ecomfe/grapher.js/master/dist/grapher.js)
+#### [Download v0.1](https://raw.githubusercontent.com/ecomfe/grapher.js/master/dist/grapher.js)
 
-####[Documentation](http://ecomfe.github.io/grapher.js/doc/)
+#### [Documentation](http://ecomfe.github.io/grapher.js/doc/)
 
 
 ## Quick Start
